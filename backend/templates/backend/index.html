@@ -1,0 +1,39 @@
+{% extends 'backend/base.html' %} {% block content %}
+<div class="search-bar">
+  <div class="form">
+    <form method="POST">
+      {% csrf_token %} {{form.city_name}}
+      <button class="btn" type="submit">ADD CITY</button>
+      {% if err_msg %}
+      <p class="danger">
+        {{err_msg}}
+      </p>
+      {% elif succ_msg %}
+      <p class="success">
+        {{succ_msg}}
+      </p>
+      {% endif %}
+    </form>
+  </div>
+</div>
+<div>
+  {% for context in weather_data %}
+  <div class="column">
+    <div class="delete">
+      <a href="{% url 'delete_city' context.city %}">X</a>
+    </div>
+    <div class="image">
+      <img src="https://openweathermap.org/img/w/{{context.icon}}.png" alt="" />
+    </div>
+    <p>{{context.city}}</p>
+    <div class="row">
+      <p>
+        <strong>{{context.max_temp}}°F</strong> | {{context.description}} <br />
+        Visibility : {{context.visibility}} KM
+      </p>
+    </div>
+  </div>
+  <div class="gap"></div>
+  {% endfor %}
+</div>
+{% endblock %}
